@@ -22,6 +22,7 @@ require(knitr)
 require(kableExtra)
 require(reshape2)
 require(stargazer)
+require(plm)
 
 #  C. Read in the data
 #   1. WHO
@@ -453,10 +454,13 @@ cmb <- cmb %>%
 	mutate(ln_new_cases = log(new_cases + 1 - min(new_cases) ),
 							ln_norm_new_cases = log(norm_new_cases + 1 - min(new_cases)))
 
-model <- plm::plm(ln_new_cases ~ asc_c1 + asc_c1_14 +
+model <- plm(ln_new_cases ~ asc_c1 + asc_c1_14 +
 																asc_c2 + asc_c2_14 +
 																country, data=cmb, index=c("country", "date_reported"), model="within")
-summary(model)
+```
+
+```{r results='asis', fig.align='center', echo=FALSE}
+stargazer(model,header=FALSE,type="html")
 ```
 
 The above model is fit with the following equations -
@@ -485,22 +489,23 @@ As we can see from the table above, it's clear that the final transformed versio
 
 ### Diagnostics
 Next, model assumptions are verified in order to draw conclusions from the above model. First a plot of the Residuals vs Fitted and Normal QQ are constructed in order to check whether the constant variance (homocedasticity) is achieved by the model and the errors are normally distributed.  
-```{r}
+```{r, echo=FALSE}
 par(mfrow = c(1,2))
 plot(as.vector(model$model[[1]] - model$residuals), as.vector(model$residuals), main = "Residuals vs Fitted Values",
      xlab = "Fitted values", ylab = "Residuals")
 
 qqnorm(model$residuals, main = "Normal Q-Q Plot of Residuals")
 qqline(as.vector(model$model[[1]] - model$residuals))                                 
-
-
+# pbgtest(model)
 ```
 
 Note from the two plots above, it's clear that the model suffers greatly from heterocedasticity. That is the error terms are not normally distributed as indicated by the fan shape in the plot. In addition, we can see that the Normal QQ plot does not show a straight line indicating that the distribution of the errors is not normal. At this stage it is impossible to draw any conclusions from the model. As a result it is important to revise the model to better satisfy the conclusion. 
 
+We next check for serial correlation. In the panel regression context this can be accomplished using Bruesch-Godfrey/Wooldridge test. This test formulates a null hypothesis that there is no serial correlation with the alternative that there is serial correlation. Specifically it tests for the presence of serial correlation that has not been included in the underlying data. If serial correlation is present this would mean that incorrect conclusions would be drawn from the model or that estimates produced are not accurate. The result of the test are significant indicating that there is serial correlation present. As a result additional review of the model is necessary.
+
 ### Conclusion
 
-[WIP]
+In conclusion, the goal of the project is to use the data provided by the WHO Coronavirus Dashboard as well the Oxford Covid-19 Government Response Tracker in order to understand whether there is a link between the school and workplace closure expressed in the number of new cases. In order to invertigate this question, a panel regression approach was used. The results of various models fit so far suggest inconclusive results. Specifically, the model fit indicates significant effect but the model diagnostics have demonstrated that the model is specified incorrectly and there are serious departures from model assumptions. As such, further research is necessary to better formulate the model. For example, it's necessary to better consider ommited variables.  
 
 #### Citations 
 
