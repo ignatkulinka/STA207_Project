@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r include=FALSE}
 #  A. Set working directory
-setwd("~/Documents/UC Davis/Winter 2022/STA 207/Project/final project//")
+setwd("~/Documents/UC Davis/Winter 2022/STA 207/Final Project/final project/")
 
 #  B. Import packages
 require(tidyverse)
@@ -491,7 +491,7 @@ plot(as.vector(model$model[[1]] - model$residuals), as.vector(model$residuals), 
      xlab = "Fitted values", ylab = "Residuals")
 
 qqnorm(model$residuals, main = "Normal Q-Q Plot of Residuals")
-qqline(res)                                 d
+qqline(as.vector(model$model[[1]] - model$residuals))                                 
 
 
 ```

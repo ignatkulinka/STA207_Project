@@ -4,7 +4,7 @@
 
 # I. Setup ----------------------------------------------------------------
 #  A. Set working directory
-setwd("../ignat/Documents/UC Davis/Winter 2022/STA 207/Project/progs")
+setwd("~/Documents/UC Davis/Winter 2022/STA 207/Final Project/progs/")
 
 #  B. Import packages
 require(tidyverse)
@@ -92,4 +92,5 @@ oxford %>% filter(is.na(who_region)) %>% pull(countryname) %>% unique
 
 # V. Data Output ----------------------------------------------------------
 #  A. Save data
-write_rds(oxford, "../data/002_oxford.rds")
+write_rds(oxford %>% select(c(1:10, 50:62)), "../data/002_oxford.rds")
+

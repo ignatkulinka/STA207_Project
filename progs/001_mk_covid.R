@@ -4,7 +4,7 @@
 
 # I. Setup ----------------------------------------------------------------
 #  A. Set working directory
-setwd("../ignat/Documents/UC Davis/Winter 2022/STA 207/Project/progs")
+setwd("~/Documents/UC Davis/Winter 2022/STA 207/Final Project/progs/")
 
 #  B. Import packages
 require(tidyverse)
