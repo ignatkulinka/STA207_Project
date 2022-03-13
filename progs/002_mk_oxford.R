@@ -16,7 +16,7 @@ require(lubridate)
 oxford <- read_csv("../raw/OxCGRT_latest.csv")
 
 #   2. WHO dat
-who <- read_rds("../data/001_covid.rds")
+covid <- read_rds("../data/001_covid.rds")
 
 # III. Data Processing ----------------------------------------------------
 #  A. Fix column names
@@ -65,7 +65,20 @@ fc_tlkp <- oxford %>%
 #    ii. Merge on 
 oxford <- left_join(oxford, fc_tlkp, by="countryname")
 
-#   2. WHO region
+#   2. First workplace closing 
+#    i. Look up 
+fc_tlkp <- oxford %>% 
+	filter(c2_workplace_closing > 0) %>% 
+	group_by(countryname) %>% 
+	filter(date==min(date)) %>% 
+	select(countryname, first_c2_workplace_closing = date) %>% 
+	unique()
+
+#    ii. Merge on 
+oxford <- left_join(oxford, fc_tlkp, by="countryname")
+
+
+#   3. WHO region
 #    i. Look up 
 reg_tlkp <- covid %>% 
 	select(iso3, who_region) %>% 
@@ -75,22 +88,14 @@ reg_tlkp <- covid %>%
 oxford <- left_join(oxford, reg_tlkp, by = c("countrycode" = "iso3"))
 
 #    iii. Compare
-oxford %>% 
-	group_by(who_region) %>% 
-	summarize(cnt = n())
-#   who_region                     cnt
-# 1 African Region               33540
-# 2 Region of the Americas       97500
-# 3 Eastern Mediterranean Region 17160
-# 4 European Region              42900
-# 5 South-East Asian Region       7020
-# 6 Western Pacific Region       39780
-# 7 NA                            5460
+# oxford %>% 
+# 	group_by(who_region) %>% 
+# 	summarize(cnt = n())
 
 oxford %>% filter(is.na(who_region)) %>% pull(countryname) %>% unique
 # [1] "Hong Kong" "Macao"     "Kosovo"    "Taiwan"
 
 # V. Data Output ----------------------------------------------------------
 #  A. Save data
-write_rds(oxford %>% select(c(1:10, 50:62)), "../data/002_oxford.rds")
+write_rds(oxford %>% select(c(1:10, 50:63)), "../data/002_oxford.rds")
 

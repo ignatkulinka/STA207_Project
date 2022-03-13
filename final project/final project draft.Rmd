@@ -23,6 +23,8 @@ require(kableExtra)
 require(reshape2)
 require(stargazer)
 require(plm)
+require(pander)
+require(latex2exp)
 
 #  C. Read in the data
 #   1. WHO
@@ -40,16 +42,17 @@ source("../progs/201_an_lags.R")
 
 ### Introduction
 
-As a response to the sudden COVID-19 pandemic, governments world-wide have resorted to a number of social policies designed to curtail the spread of the virus. In theory, these policies significantly reduce the number of infected individuals to a level that can be managed by healthcare systems. On the other hand, introduction of these containment policies has not been without a hefty price on global and local economies. The main goal of this project is to quantify the effect of government action on the spread of Coronavirus infections. Specifically, to measure potential impact of school and workplace closures on the number of daily new cases in order to better understand whether these policies are effective in halting the spread of the ongoing Coronavirus crisis and their potential in the future pandemics. With the main research question of whether these policies have a significant quantifiable effect on the number new cases of Coronavirus. In order to answer this question, three datasets are considered. World Health Organization ("WHO") Coronavirus Dashboard dataset provides an ongoing daily number of new Coronavirus cases by country from early 2020. These are compared to the daily government policy indicator variables in the Oxford Covid-19 Government Response Tracker ("OxCGRT") published by the Blavatnik School of Government at the University of Oxford. Particularly indicators for nation-wide school and workplace closures are used for the analysis. Lastly, the population data published by the World Bank is utilized to better understand by-country trends in the previous datasets. In order to take into account the time series aspect of the WHO and OxCGRT a panel regression is utilized to regress the daily number of new cases to government policies for over 150 countries from 2020 through 2022. 
+As a response to the sudden COVID-19 pandemic, governments world-wide have resorted to a number of social policies designed to curtail the spread of the virus. In theory, these policies significantly reduce the number of infected individuals to a level that can be managed by healthcare systems. On the other hand, introduction of these containment policies has not been without a hefty price on global and local economies. The main goal of this project is to quantify the effect of government action on the spread of Coronavirus infections. Specifically, to measure potential impact of school and workplace closures on the number of daily new cases in order to better understand whether these policies are effective in halting the spread of the ongoing Coronavirus crisis and their potential in future pandemics. The main research question is to find whether these policies have a significant quantifiable effect on the number new cases of Coronavirus. In order to answer this question, three datasets are considered. World Health Organization ("WHO") Coronavirus Dashboard [1] dataset provides an ongoing daily number of new Coronavirus cases by country from early 2020. These are compared to the daily government policy indicator variables in the Oxford Covid-19 Government Response Tracker ("OxCGRT") [2] published by the Blavatnik School of Government at the University of Oxford. Particularly indicators for nation-wide school and workplace closures are used for the analysis. Lastly, the population data published by the World Bank [3] is utilized to better understand by-country trends in the previous datasets. In order to take into account the time series aspect of the WHO and OxCGRT a panel regression is utilized to regress the daily number of new cases on indicator variables of government policies in Portugal, France, Germany, The United Kingdom, and Italy.
 
 ### Background
-On January 23, 2020, China imposed a first complete lockdown in the city of Wuhan [1]. Within several months’ time countless governments all over the world followed suit. By April, over 3.9 billion people in over 90 countries have been confined to their homes by their governments in an effort to “flatten” the epidemic curves[2]. As such, all but essential workers have been asked to work from home and students continued learning through remote instruction modes in order to ensure that the number of patients do not exceed hospital capacities. Since early 2020, most of the countries all over the world have went into and come out of lock down several times over. In the absence of a reliable vaccine against COVID-19, nonpharmaceutical interventions (NPI) such as mask mandates and lockdowns have become a primary tool for government virus containment efforts. While lockdowns are likely to have had the intended effect of reducing the initial explosion of Coronavirus to proportions beyond hospital capacity, with time the effect on the most vulnerable people and economies has become extremely pronounced. For example, continuous isolation has also had a lasting impact as over 40% of U.S. adults have reported struggling with mental health or substance abuse [4]. Furthermore, World Bank estimates that as many as 50 million people have been pushed to extreme poverty as a result of lockdown policies[3]. As such, government decision makers worldwide have been presented with the dilemma on how to most effectively use lockdown as a tool in the current crisis as well as potential future contagious virus outbreaks. With the key question – are school and workplace closures effective in managing Coronavirus? 
+On January 23, 2020, China imposed a first complete lockdown in the city of Wuhan [4]. Within several months’ time countless governments all over the world followed suit. By April, over 3.9 billion people in over 90 countries have been confined to their homes by their governments in an effort to “flatten” the epidemic curves [5]. As such, all but essential workers have been asked to work from home and students continued learning through remote instruction modes in order to ensure that the number of patients do not exceed hospital capacities. Since early 2020, most of the countries all over the world have went into and come out of lock down several times over. In the absence of a reliable vaccine against COVID-19, non pharmaceutical interventions (NPI) such as mask mandates and lockdowns have become a primary tool for government virus containment efforts. While lockdowns are likely to have had the intended effect of reducing the initial explosion of Coronavirus to proportions beyond hospital capacity, with time the effect on the most vulnerable people and economies has become extremely pronounced. For example, continuous isolation has also had a lasting impact as over 40% of U.S. adults have reported struggling with mental health or substance abuse [7]. Furthermore, World Bank estimates that as many as 50 million people have been pushed to extreme poverty as a result of lockdown policies [6]. As such, government decision makers worldwide have been presented with the dilemma on how to most effectively use lockdowns as a tool in the current crisis as well as potential future contagious virus outbreaks. 
 
-Besides this report, there has been an influx of effort in the academic community to provide policy makers with the most accurate data driven recommendations. Overall, literature review suggests two main approaches to quantifying the effect of social policies – first, using mathematical epidemiological model of infection spread, and the other using statistical approaches such as regression. While vastly different in practice both of these approaches rely on specific assumptions. In contrast to epidemiological models, the regression approach allows one to relax assumptions on individual human behavior through the use of real-world observations [6].  
+Besides this report, there has been an influx of effort in the academic community to provide policy makers with the most accurate data driven recommendations. Overall, literature review suggests two main approaches to quantifying the effect of social policies – first, using mathematical epidemiological model of infection spread, and the other using statistical approaches such as regression. While vastly different in practice both of these approaches rely on specific assumptions. In contrast to epidemiological models, the regression approach allows one to relax assumptions on individual human behavior through the use of real-world observations [8].  
 
-As such, this project falls squarely into the statistical regression bucket of analyses with the key aim to untangle the individual effect of school and workplace closures on the number of new cases. This is accomplished with the application of three datasets in a panel regression. Overall, the model is formulated by regressing the number of new COVID-19 cases on the lagged indicators of school and workplace closures. In this case lags from 1 to 21 days have been explored. In addition, the panel regression model controls for country fixed effects to account for time-invariant effects and to manage omitted variable bias. In addition, some of the models explored include time since the first case and day of the week dummies to absorb time-varying factors that might have an effect on the number of new cases. This is purely observational study and contains no sampling mechanism. As such the results are meant to be interpreted as associations lacking causal inference due to scope which is to see if school and workplace closure have statistical significance when used as predictors of the number of new cases. The target population is intentionally as broad as the data allows and aimed at the [xx] countries that have reliable and stable data. 
+As such, this project falls squarely into the statistical regression bucket of analyses with the key aim to untangle the individual effect of school and workplace closures on the number of new cases. This is accomplished with the application of three datasets in a panel regression. Overall, the model is formulated by regressing the number of new COVID-19 cases on the lagged indicators of school and workplace closures. In this case lags from 1 to 21 days have been explored. In addition, the proposed panel regression model controls for country fixed effects to account for time-invariant effects and to manage omitted variable bias. In addition, some of the models explored include "time since the first case"" and "day of the week" dummy variables to absorb time-varying factors that might have an effect on the number of new cases. This is purely observational study and contains no sampling mechanism. As such the results are meant to be interpreted as associations between school and workplace closure and the number of new cases. While the data spans dozens of countries, in attempt to control for confounding variables such as weather patterns and to attempt at establishing reliable inferences of government containment policies on the number of new COVID-19 cases, countries with similar geographic locations, and experienced similar trends of Covid-19 were targeted. Additional criteria such as medical healthcare systems, socioeconomic level, and size were all considered in order to focus the analysis on Portugal, France, Germany, The United Kingdom, and Italy.
 
- The first piece of data comes from the World Health Organization. WHO is a highly credible international United Nations agency tasked with promoting health, expanding health coverage, and responding to emergencies [7]. In effort to spread awareness and transparency WHO publishes data related to Coronavirus in a dashboard updated daily. As such, the number of new Coronavirus cases is sourced directly from the dashboard. The data provided is structured in a daily format by country with additional fields documenting the number of cumulative cases as well as daily new deaths and cumulative deaths for 237 countries with data ranging from January 3, 2020 through February 17, 2022. The table below includes a summary of fields in the data -  
+
+As mentioned above, three datasets were used in this analysis. The first piece of data comes from the World Health Organization. WHO is a highly credible international United Nations agency tasked with promoting health, expanding health coverage, and responding to emergencies [9]. In effort to spread awareness and transparency WHO publishes data related to Coronavirus in a dashboard updated daily. As such, the number of new Coronavirus cases is sourced directly from the dashboard. The data provided is structured in a daily format by country with additional fields documenting the number of cumulative cases as well as daily new deaths and cumulative deaths for 237 countries with data ranging from January 3, 2020 through February 17, 2022. The table below includes a summary of fields in the data -  
  
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 #  A. WHO Data
@@ -66,7 +69,7 @@ who_col <- tibble(col = c("Date Reported",
 																															"Country, territory, area",
 																															"WHO regional office",
 																															"New confirmed cases. Calculated by subtracting previous cumulative case count from current cumulative cases count.",
-																															"Integer	Cumulative confirmed cases reported to WHO to date",
+																															"Integer	cumulative confirmed cases reported to WHO to date",
 																															"New confirmed deaths. Calculated by subtracting previous cumulative deaths from current cumulative deaths.",
 																															"Cumulative confirmed deaths reported to WHO to date"))
 
@@ -75,7 +78,7 @@ who_col %>%
 	kableExtra::kable_styling()
 ```
  
-Information on the government policies and their timing is sourced from Oxford Covid-19 Government Response Tracker ("OxCGRT") published by the Blavatnik School of Government at the University of Oxford. OxCGRT is an active crowd-sourced project that systematically collects information on policy measure taken by governments to tackle Coronavirus. It spans the time period from January 1, 2020 through February 18, 2022. Overall, the data set represents a daily by-country log of policies implemented and their respective strictness. As such it provides a unique opportunity for comparison and analysis. Among the 23 indicators provided only two are used for the purposes of this analysis. First, an indicator for school closure which tracks government mandates closures based on severity on a range from zero to three. The second indicator is analogous but follows workplace closures instead. As part of the analysis WHO and OxCGRT are merged together by country and date to allow associations between policies and Coronavirus cases. A table describes the subset of fields utilized is included below -  
+Information on the government policies and their timing is sourced from Oxford Covid-19 Government Response Tracker ("OxCGRT") published by the Blavatnik School of Government at the University of Oxford. OxCGRT is an active crowd-sourced project that systematically collects information on policy measures taken by governments to tackle Coronavirus. It spans the time period from January 1, 2020 through February 18, 2022. Overall, the data set represents a daily by-country log of policies implemented and their respective strictness. As such it provides a unique opportunity for comparison and analysis. Among the 23 indicators provided only two are used for the purposes of this analysis. First, an indicator for school closure which tracks government mandates closures based on severity on a scale from zero to three. The second indicator is analogous but follows workplace closures instead. As part of the analysis WHO and OxCGRT are merged together by country and date to allow associations between policies and Coronavirus cases. A table describing the subset of fields utilized is included below.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 #  A. WHO Data
@@ -106,13 +109,14 @@ Note that each of the "C" fields is an ordinal with typical values of 0 through 
 	+ 2 - require closing (only some levels or categories, eg just high school, or just public schools)
 	+ 3 - require closing all levels
 
-+ C2 School Closing
++ C2 Workplace Closing
 	+ 0 - no measures
 	+ 1 - recommend closing (or recommend work from home) or all businesses open with alterations resulting in significant differences compared to non-Covid-19 operation
 	+ 2 - require closing (or work from home) for some sectors or categories of workers
 	+ 3 - require closing (or work from home) for all-but-essential workplaces (eg grocery stores, doctors)
 
-Lastly, in an effort to further standardize by-country trends, population data published by the World Bank is utilized. In this case, a simple dataset with country population for over 250 regions in 2020. This data set contains four variables - Country name, Country Code, Indicator Code, and Population. Note that this data sets provides world and region population in addition to individual countries.
+Lastly, in an effort to further standardize by-country trends, population data published by the World Bank is utilized. In this case, a simple dataset with country population for over 250 regions in 2020. This data set contains four variables - Country name, Country Code, Indicator Code, and Population. Note that this data sets provides world and region population in addition to individual countries. Further discussion of the data is included in the Exploratory Data Analysis section. 
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 #  A. WHO Data
@@ -130,14 +134,11 @@ wb_col %>%
 	kableExtra::kable_styling()
 ```
 
-Further discussion of the data is included in the Exploratory Data Analysis section. 
-
-Explore this dataset and generate summary statistics that you find informative, and explain your findings. The summary statistics should include at least time, number of cases, number of death, case-mortality rate.
 
 ### Exploratory Data Analysis
 
 #### Initial Review
-Before the modeling stage of the analysis, the crucial step of data exploration is performed to compare and contrast data sets. An initial review of each data source is performed. WHO data contains 777 data points for each of the 237 countries with a total of 184,149 records. Next, the WHO data set is analyzed for anomalies. First the data was checked for any abnormal missing values. The summary table below captures summary statistics for each of the numeric variables. 
+Before the modeling stage of the analysis, the crucial step of data exploration is performed to compare and contrast data sets. As such, an initial review of each data source is performed. WHO data contains 777 data points for each of the 237 countries with a total of 184,149 records. Next, the WHO data set is analyzed for anomalies. First the data was checked for any abnormal or missing values. The summary table below captures summary statistics for each of the numeric variables. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 tbl2 <- covid %>% 
@@ -160,7 +161,7 @@ smry %>%
 	kable_styling()
 ```
 
-Clearly based on the summary statistics some additional data cleaning and aggregation is necessary due to negative New Cases and New Deaths values. These are most likely due to errors in reporting of cumulative statistics as those are used for calculation. As such there are 87 countries and over 5,000 records with either negative New Deaths or New Cases values which set to zero. Further investigation of the data also indicated that nine countries such as Democratic People's Republic of Korea and Turkmenistan did not report any COVID cases or deaths to WHO. These countries are excluded from the analysis because due to the global scope and severity of Coronavirus, lack of cases and deaths is highly suspicious.
+Clearly based on the summary statistics some additional data cleaning and aggregation is necessary due to negative New Cases and New Deaths values. These are most likely due to errors in reporting of cumulative statistics as those are used for calculation. As such there are 87 countries and over 5,000 records with either negative New Deaths or New Cases values. Further investigation of the data also indicated that nine countries such as Democratic People's Republic of Korea and Turkmenistan did not report any COVID cases or deaths to WHO. These countries are excluded from the analysis because due to the global scope and severity of Coronavirus, lack of cases and deaths is highly suspicious.
 
 Next, the OxCGRT data is reviewed and analyzed for anomalies. As previously mentioned, the data set contains 186 countries with data ranging from January 1, 2020 through February 18, 2022. Summary statistics of the indicator variables are produced and included below. 
 
@@ -211,7 +212,7 @@ smry_pop %>%
 	kable_styling()
 ```
 
-As the last step of the exploratory analysis data visualizations are created to review trends contained in the data. First the WHO data was used to understand the trends in new cases and new deaths over time. In order to smooth out the noise in the data, weekly average number of new cases  and new death for each of the WHO regions are plotted below using a line chart.
+As the last step of the exploratory analysis data visualizations are created to review trends contained in the data. First the WHO data was used to understand the trends in new cases and new deaths over time. In order to smooth out the noise in the data, weekly average of new cases and new death for each of the WHO regions are plotted below using a line chart.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE, paged.print=FALSE, fig.align='center'}
 #  A. Charts for WHO data
@@ -240,7 +241,7 @@ ggplot(agg1, aes(x=weekly, y=avg_cases, color=who_region)) +
 							plot.title = element_text(hjust = 0.5, size = 14))
 ```
 
-Visual inspection of these two charts suggests three surges in new cases - first in August 2020, then January - May 2021 and the last one in February 2022. The comparison between the regions indicates that the South-East Asian Region experienced a much higher explosion of cases in most of these surges. Note that in May 202, the region exhibited unprecedented explosion in cases nearing approximately an average of 40,000 new cases. On the other hand, Eastern Mediterranean Region showed a low number of new cases compared to other regions. While this chart is useful in examining overall trend in the data, it's important to note that they do not account for population density of each of the regions. As such, the following charts combine WHO Coronavirus data with population provided by the World Bank to review the trends in weekly average new cases per 100,000.
+Visual inspection of these two charts suggests three surges in new cases - first in August 2020, then January - May 2021 and the last one in February 2022. The comparison between the regions indicates that the South-East Asian Region experienced a much higher explosion of cases in most of these surges. Note that in May 2021, the region exhibited unprecedented explosion in cases nearing approximately an average of 40,000 new cases. On the other hand, Eastern Mediterranean Region showed a low number of new cases compared to other regions. While this chart is useful in examining overall trend in the data, it's important to note that they do not account for population density and size of each of the regions. As such, the following charts combine WHO Coronavirus data with population provided by the World Bank to review the trends in weekly average new cases per 100,000.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE, paged.print=FALSE, fig.align='center'}
 #   C. Average case rate by region
@@ -268,9 +269,38 @@ ggplot(agg3, aes(x=weekly, y=avg_cases, color=who_region)) +
 							plot.title = element_text(hjust = 0.5, size = 14))
 ```
 
-The above chart provides a much better summary of the trend in new cases by accounting for the population of each country/region. As such three different waves of new cases can be seen around November 2020, February 2021, and January 2022. When adjusting for population, South-East Asian Region is no longer the leader in cases and death. In fact, we can see that European and Americas Regions leads with a large number of cases in late 2020 and early 2022.
+The above chart provides a much better summary of the trend in new cases by accounting for the population of each country/region. As such three different waves of new cases can be seen around November 2020, February 2021, and January 2022. When adjusting for population, South-East Asian Region is no longer the leader in cases and death. In fact, we can see that European and Americas Regions lead with a large number of cases in late 2020 and early 2022.
 
-Lastly, the School Closing variable in OxCGRT is reviewed to understand the timeline of the initial government action in the face of the first wave of Coronavirus news in early 2020. For this analysis, the first action regardless of the severity (levels 1 through 3) are recorded and plotted below. Note that the first chart compares all countries around the globe where the second one compares the data of the initial school closing between the African and European regions. 
+Next, a line chart of the case fatality rate was created to observe if any WHO regions experienced a higher proportion of deaths due to Coronavirus. Fatality rate is defined as the ratio of number of deaths to number of cases. Note that a weekly average was used to distill the data to larger patterns and trends over the period of 2020 through 2022. The plot below demonstrates the variation in fatality rate among all six regions of WHO. One clear takeaway is the huge spike in fatality at the end of 2020. This peak roughly corresponds to the winter surge in Coronavirus experienced worldwide.
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, paged.print=FALSE, fig.align='center'}
+#   1. Average 
+#    i. Aggregate data
+agg1 <- covid %>% 
+	filter(who_region != "Other") %>% 
+	mutate(weekly = ymd(cut(date_reported, breaks = "1 week"))) %>% 
+	select(who_region, weekly, new_cases, new_deaths) %>% 
+	group_by(who_region, weekly) %>% 
+	summarize(ft_rt = ifelse(is.finite(sum(new_cases)/sum(new_deaths)), mean(sum(new_cases)/sum(new_deaths)), 0))
+
+#    ii. Plot data
+ggplot(agg1, aes(x=weekly, y=ft_rt, color=who_region)) +
+	geom_line(stat="identity", alpha = 0.7) +
+	scale_x_date(name = "Date Reported", 
+														date_breaks = "3 month",
+														date_minor_breaks = "1 month",
+														date_labels = "%m-%Y") +
+	scale_color_manual(values = brewer.pal(n = 6, name = "Dark2"))+
+	theme_classic() +
+	scale_y_continuous(name = "Average Number of Cases", labels = scales::comma_format()) +
+	labs(title = "Weekly Average New Cases by WHO Region",
+						color = "WHO Region") +
+	theme(legend.position = "bottom",
+							plot.title = element_text(hjust = 0.5, size = 14))
+```
+ 
+
+Lastly, the School Closing variable in OxCGRT is reviewed to understand the timeline of the initial government action in the face of the first wave of Coronavirus news in early 2020. For this analysis, the first government action regardless of the severity (levels 1 through 3) are recorded and plotted below. Note that the first chart compares all countries around the globe where the second one compares the data of the initial school closing between the African and European regions. For example, Italy had an initial school closing on February 23, 2020. This data point is counted in both plots for that date. 
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE, paged.print=FALSE, fig.align='center'}
 #  2. Charts for Oxford Data
@@ -283,7 +313,7 @@ agg_ox <- oxford %>%
 
 #    ii. Plot data
 ggplot(agg_ox, aes(x=first_c1_school_closing, y=cnt)) +
-	geom_line() +
+	geom_bar(stat="identity") +
 	# geom_vline(xintercept = ymd("2020-03-16")) +
 	scale_x_date(name = "Date of Intervention", 
 														date_breaks = "1 week",
@@ -297,7 +327,7 @@ ggplot(agg_ox, aes(x=first_c1_school_closing, y=cnt)) +
 #   B. Initial school closing by who region
 #    i. Aggregate data
 agg_ox2 <- oxford %>% 
-	select(countryname, who_region, first_c1_school_closing) %>% 
+	dplyr::select(countryname, who_region, first_c1_school_closing) %>% 
 	group_by(first_c1_school_closing, who_region) %>% 
 	summarize(cnt = n_distinct(countryname)) %>% 
 	filter(who_region %in% c("European Region", "African Region"))
@@ -320,44 +350,9 @@ ggplot(agg_ox2, aes(x=first_c1_school_closing, y=cnt, fill=who_region)) +
 
 ```
 
-The first chart comparing the initial government intervention among all countries demonstrates that most countries enacted policies between early February 2020 through the end of Marth 2021 with a peak on 16/03/2020 when the most individual countries put in policies place to limit Coronavirus spread. The spread suggests different approaches of governments around the world. As such the second chart showcases that approach of the governments in the African and Europen regions differed significantly. That is the European nations started to enact school closures as early as late February where governments in the African regions did not enact policies until early March. This diversity of approaches becomes the motivation behind the research question discusses in the Modeling section below. 
+The first chart comparing the initial government intervention among all countries demonstrates that most countries enacted policies between early February 2020 through the end of March 2021 with a peak on 16/03/2020, when the most individual countries put in place policies to limit Coronavirus outbreaks. The spread suggests different approaches of governments around the world. As such the second chart showcases that approach of the governments in the African and European regions differed significantly. That is the European nations started to enact school closures as early as late February where governments in the African regions did not enact policies until early March. This diversity of approaches becomes the motivation behind the research question discussed in the Modeling section below. 
 
 ### Modeling
-#### Methodology
-Propose an appropriate model to answer the questions of interest.
-Explain your notation.
-State assumptions for your model.
-Explain why your model is appropriate for this task.
-
-The main research question of this report is to address and quantify the effect (or lack there) of government action on the spread of Coronavirus infections. That is, to measure potential impact of containment and closure policies such as school and workplace closure on the number of daily new cases. In other words - "Does government intervention through closing schools and workplaces affect the number of new Coronavirus cases?" In order to answer this question, a panel regression model is proposed to measure the impact of school and workplace closing as indicated by C1 School Closing and C2 Workplace Closing variables in the OxCGRT dataset on the number of new cases per 100,000. 
-
-In order to prepare the dataset for analysis, WHO data is combined with the OxCGRT data set using the country and date fields. The resulting data is then matched to the WorldBank data using the country field and minor countries with less than 100,000 are excluded. This is performed in order to exclude outliers and stabilize the population by making it more comparable. The resulting data set includes 180 countries over 130,000 records. Next, additional data preprocessing is applied to the C1 School Closing and C2 Workplace Closing variables. As mentioned above, these two variables are defined on an ordinal scale ranging from zero (no restrictions) to three (most severe). In order to better address the research question, these two variables are redefined into binary variables with zero (no restrictions) and one (any restrictions). This allows to test the hypothesis if any level of government intervention through school and workplace closing has an effect on number of new cases. 
-
-Below is a fixed effects panel regression model proposed in this project. Note that the fixed effects model was chosen to understand the effect of government intervention within each country. This is an effective approach as it allows to control for time-invariant, that is slow to change economy-wide features that might have impact on the number of new cases such as demographic characteristics and public health systems This decision was also confirmed by the Hausman test for the Exogeneity which returned statistically significant results suggesting a fixed effects model
-
-
-$$
-\text{New Cases per 100,000}_{i,t}=\beta_0+\beta_1\text{School Closing}_{i,t}+\beta_2\text{School Closing}_{i,t-l}+\beta_3\text{Workplace Closing}_{i,t} + \beta_3\text{Workplace Closing}_{i,t-l}+\epsilon_{i,t}
-$$
-
-where -
-
-+ $t=1,...,777$ days in the data
-+ $i=1,...,180$ countries accross all datasets
-+ $\text{New Cases per 100,000}_{i,t}$: the number of new cases per 100,000 on day t in country i
-+ $\beta_0$: intercept
-+ $\text{School Closing}_{i,t}$: dummy variable indicating restrictions on schools on day t in country i where 0 indicates no restrictions and 1 stands for any restrictions 
-+ $\text{School Closing}_{i,t-l}$: dummy variable indicating restrictions on schools on day l which ranges from -1 through -21 in country i
-+ $\text{Workplace Closing}_{i,t}$: dummy variable indicating restrictions on workplaces on day t in country i where 0 indicates no restrictions and 1 stands for any restrictions 
-+ $\text{Workplace Closing}_{i,t-l}$: dummy variable indicating restrictions on workplaces on day l which ranges from -1 through -21 in country i
-+ $\epsilon$: idiosyncratic error term which contains the variation not captured by the other predictors
-
-Note, literature review suggests that median COVID-19 incubation period is estimated around 5 days and most develop symoptoms within 11.5 days. As such, the $\text{School Closing}_{i,t-l}$ and $\text{Workplace Closing}_{i,t-l}$ variables are included where l has been defined as 1 through 21 to account both immediate and long term effect of social policies. In the process of better understanding the data, a number of models was reviewed with l in the range of 1 through 21 were compared and inspected for statistical significance.  
-
-During the model fitting the following assumptions will need to be confirmed: (1) Covariates are exogenous: $E(\epsilon_i|x_{i1},..,x_{ki})=0$  (2) Uncorrelated errors: $Cov(\epsilon_i,\epsilon_j)=0$ (3) Homoskedastic errors: $Var(\epsilon_i)=Var(y_i|x_{i1},..,x_{ki})=\sigma^2$ 4) There is no multicollinearity between predictors 5) There are no strong outliers/influential points 
-
-
-#### Model Fitting
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # II. Data Importing ------------------------------------------------------
 #  A. Read in the combined data
@@ -377,40 +372,11 @@ top_tlkp <- full_dt %>%
 	filter(!is.na(country)) %>% 
 	group_by(country, pop) %>% 
 	summarize(cnt = n()) %>% 
-	arrange(-pop) %>% 
-	head(180) %>% 
-	select(country, pop)
+	filter(country %in% c("Portugal", "France", "Germany", "The United Kingdom", "Italy"))
 
 #    ii. Subset
 cmb <- cmb %>% 
 	inner_join(., top_tlkp, by = "country")
-
-#    iii. Look for any missing data spots
-# cmb %>% 
-# 	group_by(country) %>% 
-# 	mutate(diff = as.numeric(dplyr::lead(date_reported) - date_reported)) %>% 
-# 	group_by(country, diff) %>% 
-# 	summarize(cnt = n()) %>% 
-# 	filter(diff>1)
-# Note: appears to be gaps 
-
-#    iv. Check for min/max
-# cmb %>% 
-# 	group_by(country) %>% 
-# 	summarize(min_dt = min(date_reported),
-# 											max_dt = max(date_reported))
-#       country                  min_dt     max_dt    
-#	1 Bangladesh               2020-01-03 2022-02-12
-# 2 Brazil                   2020-01-03 2022-02-12
-# 3 China                    2020-01-03 2022-02-16
-# 4 India                    2020-01-03 2022-02-07
-# 5 Indonesia                2020-01-03 2022-01-31
-# 6 Mexico                   2020-01-03 2022-02-14
-# 7 Nigeria                  2020-01-03 2022-01-31
-# 8 Pakistan                 2020-01-03 2022-01-30
-# 9 Russian Federation       2020-01-03 2022-02-06
-# 10 United States of America 2020-01-03 2022-02-15
-# Note: the various end dates! 
 
 #  D. Keep in the predictors of choice (any effect scenario)
 cmb <- cmb %>% 
@@ -418,66 +384,120 @@ cmb <- cmb %>%
 								asc_c2 = as.factor(ifelse(c2_workplace_closing > 0, 1, 0)))
 
 #  E. Add fields
-#   1. Year
-cmb <- cmb %>% 
-	mutate(yr = as.factor(year(date_reported)))
-
-#   2. Define cases per 100,000
-#    i. Make new field
+#   1. Define cases per 100,000
+#    i. Make new field for metric
 cmb <- cmb %>% 
 	mutate(norm_new_cases = new_cases/pop * 100000)
 
-#    ii. Define a rolling average of cases per 100,000
-# mk_roll <- function(x, k) mutate(x, "norm_new_cases_{{k}}" := rollmean(norm_new_cases, k, fill = NA)) 
-# cmb <- cmb %>% 
-# 	group_by(country) %>% 
-# 	mutate(roll_new_cases_3 = rollmean(norm_new_cases, 3, fill = NA))
+#    i. Make new field for metric
+cmb <- cmb %>%
+	group_by(country, wk=week(date_reported)) %>% 
+	mutate(weekly_norm_new_cases = mean(norm_new_cases))
 
-#   3. Days since first infection 
-cmb <- cmb %>% 
-	group_by(country) %>% 
-	mutate(days_since_fc = (ifelse(as.numeric(date_reported - first_case) > 0, as.numeric(date_reported - first_case), 0)))
-
-#   4. Day of the week dummy
-cmb <- cmb %>% 
-	mutate(day_of_week = as.factor(weekdays(date_reported)))
-
-#   5. Lag policies (3)
+#   2. Lag policies (3)
 cmb <- lag_fitter(cmb, 14)
 
-#   6. Factor country
+#   3. Factor country
 cmb <- cmb %>% 
 	mutate(country = as.factor(country))
-
-cmb <- cmb %>%
-	# filter(between(date_reported, ymd("2020/05/01"), ymd("2022/02/01"))) %>%
-	mutate(ln_new_cases = log(new_cases + 1 - min(new_cases) ),
-							ln_norm_new_cases = log(norm_new_cases + 1 - min(new_cases)))
-
-model <- plm(ln_new_cases ~ asc_c1 + asc_c1_14 +
-																asc_c2 + asc_c2_14 +
-																country, data=cmb, index=c("country", "date_reported"), model="within")
 ```
 
-```{r results='asis', fig.align='center', echo=FALSE}
-stargazer(model,header=FALSE,type="html")
+#### Methodology
+
+The main research question of this report is to address and quantify the effect (or lack there) of government action on the spread of Coronavirus infections. That is, to measure potential impact of containment and closure policies such as school and workplace closure on the number of daily new cases. In other words - "Does government intervention through closing schools and workplaces affect the number of new Coronavirus cases?" In order to answer this question, a panel regression model is proposed to measure the impact of school and workplace closures on the average of new cases per 100,000. 
+
+In order to prepare the dataset for analysis, WHO data is combined with the OxCGRT data set using the country and date fields. The resulting data is then matched to the World Bank data using the country field. As first mentioned in the Background section of this report, the entirety of data was subset to Portugal, France, Germany, The United Kingdom, and Italy. Below is chart that compares the logged weekly average of new cases per 100,000. The average was chosen for the response variable to remove daily reporting trends from the data. In addition, the log transform is used to improve model fit. Note that countries analyzed were chosen in order to control for potential inherent differences in countries around the world to isolate the effect of containment policies. Portugal, France, Germany, The United Kingdom, and Italy were chosen because of the similarity in geographic location, overall climate, and demographics. In similar spirit, the time period is chosen to be from February 2020 through November 2020 in order to control for potential effects of vaccine roll outs. This window also excludes some of the virus mutations that became prevalent later. 
+
+```{r, echo=F, fig.align='center'}
+agg_cmb <- cmb %>% 
+	mutate(y = log(weekly_norm_new_cases)) %>% 
+	filter(date_reported > ymd("2020/01/01"), date_reported < ymd("2020/10/1"))
+
+
+# check_fc %>%
+# 	summarize(fc1=min(first_c1_school_closing),
+# 											fc2=min(first_c2_workplace_closing))
+
+#    ii. Plot data
+ggplot(agg_cmb, aes(x=date_reported, y=y, color=country)) +
+	geom_line(stat="identity", alpha = 0.7) +
+	scale_x_date(name = "Date Reported",
+														date_breaks = "3 month",
+														date_labels = "%m-%Y") +
+	scale_color_manual(values = brewer.pal(n = 6, name = "Dark2"))+
+	theme_classic() +
+	scale_y_continuous(name = "Logged Weekly New Cases per 100,000", labels = scales::comma_format()) +
+	labs(title = "Logged Number of Weekly New Cases per 100,000 by Country",
+						color = "Country") +
+	theme(legend.position = "bottom",
+							plot.title = element_text(hjust = 0.5, size = 14))
 ```
 
-The above model is fit with the following equations -
+As demonstrated by the plot above, for each of the five countries the weekly number of new cases per 100,000 follows a similar trend. In addition, all of the five countries first implemented school and workplace closures around the same time in early 2020. Next, additional data preprocessing is applied to the C1 School Closing and C2 Workplace Closing variables. As mentioned above, these two variables are defined on an ordinal scale ranging from zero (no restrictions) to three (most severe). In order to better address the research question, these two variables are redefined into binary variables with zero (no restrictions) and one (any restrictions). This allows to test the hypothesis if any level of government intervention through school and workplace closing has an effect on number of new cases. 
+
+The panel regression model below is proposed to answer the research question. In this case, a panel regression model is relevant because of the structure of the data. That is for each day, each country has a row in the data which specifies number of new Coronavirus cases, number of new deaths as well as other information regarding the government containment policies. This data structure corresponds to panels over time. Panel regression is widespread and is a common econometric approach that contains more information and variability than time series data. In addition, this approach is preferred because it can minimize biases compared to cross-sectional data and time series approaches [10].
+
+Below is a fixed effects panel regression model proposed in this project in order to measure the temporal effect of policy effects on the number of new cases. Note that the fixed effects model was chosen to understand the effect of government intervention within each country. This is an effective approach as it allows to control for time-invariant, slow to change economy-wide features that might have impact on the number of new cases such as demographic characteristics, public health systems, and weather patterns. The assumptions for this model are listed below and then checked in the Diagnostics section.
+
 
 $$
-\text{log(New Cases)}_{i,t}=\beta_0+\beta_1\text{School Closing}_{i,t}+\beta_2\text{School Closing}_{i,t-7}+\beta_3\text{Workplace Closing}_{i,t} + \beta_3\text{Workplace Closing}_{i,t-7}+\epsilon_{i,t}
+\text{log(Weekly Average New Cases per 100,000)}_{i,t}=\beta_0+\beta_1\text{School}_{i,t}+\beta_2\text{School}_{i,t-14}+\beta_3\text{Workplace}_{i,t} + \beta_4\text{Workplace}_{i,t-14}+\epsilon_{i,t}
 $$
 
-Note that the definitions for all variables are the same except the value of 7 was chosen for $l$. This value was chosen because it provides the best fit of the data. Note that this is done after reviewing potential values between 1 and 21. The value of 7 appears also makes sense given that it falls after most people infected will start showing symptoms and will be able to self-isolate. In addition, the log of raw number of new cases is chosen as a predictor. In this case, this is preferred because of the better model fit it provides. The model summary above demonstrates that the dummy variables for school and workplace closure are in fact significant telling us that these two policies do in fact have an effect on the number of new cases. While the coefficients are positive, it is necessary to transform them back in order to interpret them. The table below compares the transformed and non-transformed versions of the coefficients.
+where -
+
++ $t=1,...,242$ days in the data for each country
++ $i=1,...,5$ countries across all datasets
++ $\text{log(Weekly Average New Cases per 100,000)}_{i,t}$: log of weekly average of new cases per 100,000 on day t in country i
++ $\beta_0$: country specific, time invariant factor for country i
++ $\text{School}_{i,t}$: dummy variable indicating restrictions on schools on day t in country i where 0 indicates no restrictions and 1 stands for any restrictions
++ $\text{School}_{i,t-14}$: dummy variable indicating restrictions on schools on day t-14 in country i where 0 indicates no restrictions and 1 stands for any restrictions 
++ $\text{Workplace}_{i,t}$: dummy variable indicating restrictions on workplaces on day t in country i where 0 indicates no restrictions and 1 stands for any restrictions 
++ $\text{Workplace}_{i,t-14}$: dummy variable indicating restrictions on workplaces on day t-14 in country i where 0 indicates no restrictions and 1 stands for any restrictions 
++ $\epsilon_{i,t}$: idiosyncratic error term which contains the variation not captured by the other predictors in country i at time t
+
+Note, literature review suggests that median COVID-19 incubation period has a median of 5 days and most develop symptoms within 12 days [11]. As such, the $\text{School}_{i,t-14}$ and $\text{Workplace}_{i,t-14}$ variables are included to account for long term effect of social policies. In the process of better understanding the data, a number of models was reviewed with lagged indicator variables in the range of 1 through 21 were compared and inspected for statistical significance. In this case, 14 was chosen as a balance between interpretability, prior literature review as well as statistical significance. 
+
+During the model fitting the following assumptions will need to be confirmed:
+
+(1) Covariates are exogenous: $E(\epsilon_i|x_{i1},..,x_{ki})=0$  
+
+(2) Uncorrelated errors: $Cov(\epsilon_i,\epsilon_j)=0$.
+
+(3) Homoskedastic errors: $Var(\epsilon_i)=Var(y_i|x_{i1},..,x_{ki})=\sigma^2$. 
+
+(4) Residuals are normally distributed. 
+
+#### Model Fitting
+
+Below is a summary table of the fitted model. Note that the model summary table below indicates transformed estimated coefficients. These are transformed back and interpreted below. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# A. Subset time interval
+cmb2 <- cmb %>% filter(date_reported > ymd("2020/02/01"), date_reported < ymd("2020/10/1"))
+
+# B. Fit model
+model <- plm(log(weekly_norm_new_cases) ~ asc_c1 + asc_c1_14 +
+														asc_c2 + asc_c2_14 + country, data=cmb2, index=c("country", "date_reported"), model="within")
+# summary(model)
+```
+
+```{r results='asis', message=FALSE, echo=FALSE}
+stargazer(model, type="html", align=TRUE, header = FALSE,
+										dep.var.labels = c("log(Weekly Average New Cases per 100,000)"),
+										covariate.labels = c("School Closing t", "School Closing t-14", "Workplace Closing t", "Workplace Closing t-14"))
+```
+
+
+There are two major results to report from the table above. First, we reject the null hypothesis that the coefficients for school closure at t and t-14, as well as, workplace closure at t-14 are zero at $0.05%$ significance level. On the other hand, we fail to reject that the coefficient workplace closure at t is zero at the same level. In fact, this coefficient is only significant at $/alpha = 0.10$. In order to interpret these coefficients, it is first important to transform them. The table below compares the model output coefficients and transforms them. 
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE, paged.print=FALSE, fig.align='center'}
 smry_coeff <- data.frame(lbl = c("School Closure t",
-																																	"School Closure t",
-																																	"Workplace Closure t-14",
+																																	"School Closure t-14",
+																																	"Workplace Closure t",
 																																	"Workplace Closure t-14"),
 																									og = model$coefficients, 
-																									tr = exp(model$coefficients) - 1 + min(cmb$new_cases))
+																									tr = (exp(model$coefficients) - 1) * 100)
 
 smry_coeff %>%  
 	kable(col.names = c("Coefficient", "Original", "Transformed"), digits = 2, format.args = list(big.mark = ","), row.names = FALSE) %>% 
@@ -485,32 +505,89 @@ smry_coeff %>%
 
 ```
 
-As we can see from the table above, it's clear that the final transformed versions of the predictor are negative. This can interpreted to mean that both of the policies have a significant effect on driving down the number of infections. While the $R^2$ of the model is very low, the coefficients above provide an answer to the research question of the report and demonstrates that in fact, workplace and school closures have a negative effect on the number of new Coronavirus infections. Note before we can form a solid conclusion it is necessary to review the model diagnostics and confirm that the model assumptions listed above are met.
+As we can see from the table above, it's clear that the final transformed versions of the coefficients for statistically significant predictors are negative with the exception of school closure at t-14. That is, we can see an instantaneous (from t to t-1) 49% decrease in average weekly new cases per 100,000 when school closure policies are instituted. This result suggests that there is a negative association between school closure policies and number of new COVID-19 cases. On the hand, we can not interpret the workplace closure coefficient in the same way because the coefficient is not significant at the same $/alpha=0.05$ level. That is the resulting instantaneous decrease of 25% in average weekly new cases per 100,000 could be due to chance. While the instantaneous effect for workplace closure is not significant, we can see that the lagged coefficient for workplace closure is significant and suggests a reduction of 50%. This result can be interpreted to mean that workplace closure policies are associated with a reduction in average number of new COVID-19 two weeks after the policy is instituted. Lastly, the coefficient for lagged school closures suggests a 114% increase in average COVID-19 cases two weeks after the policy is enacted. This is an unexpected result which suggests that the effect of school closure is reverse after two weeks. Furthermore, the strength of the increase suggests an overall increase after two weeks. 
+
+While the above model does not have the strongest $R^2$ value it provides a glimpse into the effect of closure policies for the five countries analyzed. Generally, the model does not attempt to control for all variation present in the model and further research is necessary into understanding potential confounding variables that might not be accounted for in the model. Note before we can form a solid conclusion it is necessary to review the model diagnostics and confirm that the model assumptions listed above are met.
 
 ### Diagnostics
-Next, model assumptions are verified in order to draw conclusions from the above model. First a plot of the Residuals vs Fitted and Normal QQ are constructed in order to check whether the constant variance (homocedasticity) is achieved by the model and the errors are normally distributed.  
-```{r, echo=FALSE}
-par(mfrow = c(1,2))
-plot(as.vector(model$model[[1]] - model$residuals), as.vector(model$residuals), main = "Residuals vs Fitted Values",
-     xlab = "Fitted values", ylab = "Residuals")
 
-qqnorm(model$residuals, main = "Normal Q-Q Plot of Residuals")
-qqline(as.vector(model$model[[1]] - model$residuals))                                 
-# pbgtest(model)
+Next, model assumptions are verified in order to draw conclusions from the above model. First a plot of the Residuals vs Fitted and Normal QQ are constructed in order to check whether the constant variance (homocedasticity) is achieved by the model and the errors are normally distributed.  
+```{r, echo=FALSE, fig.align='center'}
+# A. Residuals plot
+plts_dt <- data.frame(fitted_vals = as.vector(model$model[[1]] - model$residuals),
+																						res = as.vector(model$residuals), 
+																						country = model$model[["country"]])
+
+ggplot(plts_dt, aes(x=fitted_vals, y=res)) +
+	geom_point() +	
+	theme_classic() +
+	labs(title = "Residuals vs Fitted Plot") +
+	xlab("Fitted Values") + 
+	ylab("Residuals")+
+	theme(legend.position = "bottom",
+							plot.title = element_text(hjust = 0.5, size = 14))
+	
+# B. QQ Norm
+qqnorm(model$residuals, main = "Normal Q-Q Plot")
+qqline(as.vector(model$residuals))
+
 ```
 
-Note from the two plots above, it's clear that the model suffers greatly from heterocedasticity. That is the error terms are not normally distributed as indicated by the fan shape in the plot. In addition, we can see that the Normal QQ plot does not show a straight line indicating that the distribution of the errors is not normal. At this stage it is impossible to draw any conclusions from the model. As a result it is important to revise the model to better satisfy the conclusion. 
+Visual inspection of the Residuals vs Fitted plot demonstrates that the point cloud is mostly evenly distributed around zero suggesting that there is no pattern and that homoscedasticity assumption is upheld. On the other hand, we examine the Normal QQ plot for departures from the normality of errors assumptions. In this case, we can see that there is a slight departure on the lower and upper ends of the distribution. That is the points depart from the plotted line. The findings from the Residuals vs Fitted plot can be confirmed using studentized Breusch-Pagan test for constant variance. Below are the tested hypotheses. The test procedure yields a p value close to zero thus suggesting that we reject the null in favor of the alternative hypothesis at significance level of $\alpha=0.05$. In this case, it means that the constant variance assumption might not in fact be satisfied. This suggests that the standard errors specified in the summary of the model above might not be accurate. 
 
-We next check for serial correlation. In the panel regression context this can be accomplished using Bruesch-Godfrey/Wooldridge test. This test formulates a null hypothesis that there is no serial correlation with the alternative that there is serial correlation. Specifically it tests for the presence of serial correlation that has not been included in the underlying data. If serial correlation is present this would mean that incorrect conclusions would be drawn from the model or that estimates produced are not accurate. The result of the test are significant indicating that there is serial correlation present. As a result additional review of the model is necessary.
+$$
+H_0: \text{Homoscedasticity is present}\quad \text{and} \quad H_1: \text{Heteroscedasticity is present}
+$$
+
+We next check for serial correlation. In the panel regression context this can be accomplished using Bruesch-Godfrey/Wooldridge test. This test uses the following hypotheses: 
+
+$$
+H_0: \text{There is no autocorrelation}\quad \text{and} \quad H_1: \text{There exists autocorrelation}
+$$
+
+Note that the output of this test yields a p-value of close to zero. Suggesting that we reject the null hypothesis at significance level of $\alpha=0.05$ and there is auto correlation present in the data. This suggests that the independence of residuals assumption is violated. In the future, this issue can be remedied by adding more lagged terms to the model or adding a seasonal dummy variable. In this model this is an issue that can lead to incorrect standard error calculation. 
+
+Lastly, we look into cross-sectional dependence. Which implies that there is an effect of some unobserved common factors that are affecting all of the units. That is not all of the predictors in the model are independent. This result can lead to potential issue with estimated coefficients. We use the follow Breusch-Pagan LM test to test for cross-sectional dependence in panels. The test procedure results in a p-value close to zero suggesting that we reject the null hypothesis at significance level of $\alpha=0.05$ and conclude that cross-sectional dependence is present in the model. Thus we conclude that the predictors are not independent violating one of the assumptions above. 
+
+$$
+H_0: \text{There is no cross-sectional dependence}\quad \text{and} \quad H_1: \text{There exists cross-sectional dependence}
+$$
+
+Overall, we can see that there are some obvious issues with the model proposed. In fact, the tests above suggest that there auto correlation, non-constant error, and independence issues. At this stage, the model warrants a closer look to examine how to remedy these issues.  
+
+### Discussion 
+
+While the initial results of the model suggested that there is in fact a positive immediate effect of government containment policies on the number of new Coronavirus cases, the model diagnostics of the model prove the model inadequate for drawing any inferences or associations. In fact, once the model assumptions were scrutinized, clear departures became evident. In addition to rectifying issues with auto correlation, non-constant variance and independence it’s clear that further research into controlling for additional covariates is necessary. 
+
+Note that in this analysis, an observational study approach was adopted in order to draw associations between number of new Coronavirus cases and government containment policies. That is this project attempted to utilize the conditional ignorability assumption in order to draw meaningful inferences. As such a fixed effects panel regression model was coupled with a selection of countries of similar attributes in order to control for confounding variables.  While the idea of controlling for countries and targeting only countries with similar demographics, healthcare systems and climates is a step in the right direction, finer controls over covariates is necessary. In fact, introducing more additional data into the model can help improve both the model fit and the diagnostic issues indicated above. It might be a good idea to include additional controls for age of the population, public transportation usage, climate, and socioeconomic level. For example, prior research suggests that both elderly and children are at the greatest risk for infection. As such, it might be fruitful to include demographic statistics (eg. percent of population over 70) directly into the model as blocking variables. 
+
+
 
 ### Conclusion
 
-In conclusion, the goal of the project is to use the data provided by the WHO Coronavirus Dashboard as well the Oxford Covid-19 Government Response Tracker in order to understand whether there is a link between the school and workplace closure expressed in the number of new cases. In order to invertigate this question, a panel regression approach was used. The results of various models fit so far suggest inconclusive results. Specifically, the model fit indicates significant effect but the model diagnostics have demonstrated that the model is specified incorrectly and there are serious departures from model assumptions. As such, further research is necessary to better formulate the model. For example, it's necessary to better consider ommited variables.  
+The goal of the project is to use the data provided by the WHO Coronavirus Dashboard, World Bank as well the Oxford Covid-19 Government Response Tracker in order to understand whether there is a link between the school and workplace closure expressed in the number of new cases. In order to investigate this question, a fixed effects panel regression approach was used. Note that while the data for over 100 countries for the last two years was available for analysis, only five countries were selected - Portugal, France, Germany, The United Kingdom, and Italy. Since these countries share a lot of similarities in demographics, healthcare systems, climate, and socioeconomic levels this deliberate decision was made to minimize the number of potential confounding factors or inherent difference that might be having an effect on number of Coronavirus cases.  Furthermore, the time period between February and November of 2020 was chosen in order to control for potential effects of vaccine roll outs. This window also excludes some of the virus mutations that became prevalent later. During the modeling stage, the indicator variables for government containment policies were also converted from ordinal scale of zero to three to binary variables in order to check if any government intervention (regardless of severity) has an effect on the number of new Coronavirus cases. In addition, due to longer incubation period of the virus, lagged predictors were considered. The final model featured indicator variables both for instantaneous and delayed effects of containment policies. While the resulting model produced significant coefficients, diagnostics confirmed serious departures from the model assumptions. As such, neither associations nor inferences could be drawn from the model. As mentioned in the discussion, this outcome suggests that further research should focus on the conditional ignorability and attempt to institute finer controls over confounding variables. This could have a desired effect of allowing for valid inferences to be drawn by eliminating the effect of comorbidities and extraneous factors that impact number of Coronavirus cases. 
 
 #### Citations 
 
-Thomas Hale, Noam Angrist, Rafael Goldszmidt, Beatriz Kira, Anna Petherick, Toby Phillips, Samuel Webster, Emily Cameron-Blake, Laura Hallas, Saptarshi Majumdar, and Helen Tatlow. (2021). “A global panel database of pandemic policies (Oxford COVID-19 Government Response Tracker).” Nature Human Behaviour. https://doi.org/10.1038/s41562-021-01079-8
+[1] WHO COVID-19 Dashboard. Geneva: World Health Organization, 2020. Available online: https://covid19.who.int/ (last cited: 2/18/2022).
 
-World Bank. "Population, total." World Development Indicators, The World Bank Group, 2019, https://data.worldbank.org/indicator/SP.POP.TOTL.
+[2] Thomas Hale, Noam Angrist, Rafael Goldszmidt, Beatriz Kira, Anna Petherick, Toby Phillips, Samuel Webster, Emily Cameron-Blake, Laura Hallas, Saptarshi Majumdar, and Helen Tatlow. (2021). “A global panel database of pandemic policies (Oxford COVID-19 Government Response Tracker).” Nature Human Behaviour. https://doi.org/10.1038/s41562-021-01079-8
 
-WHO COVID-19 Dashboard. Geneva: World Health Organization, 2020. Available online: https://covid19.who.int/ (last cited: 2/18/2022).
+[3] World Bank. "Population, total." World Development Indicators, The World Bank Group, 2019, https://data.worldbank.org/indicator/SP.POP.TOTL.
+
+
+[4] Feng, Emily. “Wuhan's Lockdown Memories 1 Year Later: Pride, Anger, Deep Pain.” NPR, NPR, 23 Jan. 2021, https://www.npr.org/sections/goatsandsoda/2021/01/23/959618838/wuhans-lockdown-memories-one-year-later-pride-anger-deep-pain. 
+
+[5] Sandford, Alasdair. “Coronavirus: Half of Humanity on Lockdown in 90 Countries.” Euronews, 3 Apr. 2020, https://www.euronews.com/2020/04/02/coronavirus-in-europe-spain-s-death-toll-hits-10-000-after-record-950-new-deaths-in-24-hou. 
+
+[6] “The Impact of Covid-19 (Coronavirus) on Global Poverty: Why Sub-Saharan Africa Might Be the Region Hardest Hit.” World Bank Blogs, https://blogs.worldbank.org/opendata/impact-covid-19-coronavirus-global-poverty-why-sub-saharan-africa-might-be-region-hardest. 
+
+[7] “Mental Health, Substance Use, and Suicidal Ideation during the COVID-19 Pandemic - United States, June 24–30, 2020.” Centers for Disease Control and Prevention, Centers for Disease Control and Prevention, 29 Dec. 2020, https://www.cdc.gov/mmwr/volumes/69/wr/mm6932a1.htm. 
+
+[8] What Works to Control COVID-19? - Asian Development Bank. https://www.adb.org/sites/default/files/publication/659521/ewp-625-covid-19-econometric-analysis-cross-country-panel.pdf. 
+
+[9] “Frequently Asked Questions.” World Health Organization, World Health Organization, https://www.who.int/about/frequently-asked-questions. 
+
+[10] “Introduction to the Fundamentals of Panel Data.” Aptech, 3 Mar. 2021, https://www.aptech.com/blog/introduction-to-the-fundamentals-of-panel-data/. 
+
+[11] “Covid-19 Overview and Infection Prevention and Control Priorities in Non-U.S. Healthcare Settings.” Centers for Disease Control and Prevention, Centers for Disease Control and Prevention, https://www.cdc.gov/coronavirus/2019-ncov/hcp/non-us-settings/overview/index.html
