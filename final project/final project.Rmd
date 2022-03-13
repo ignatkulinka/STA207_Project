@@ -553,7 +553,7 @@ $$
 H_0: \text{There is no cross-sectional dependence}\quad \text{and} \quad H_1: \text{There exists cross-sectional dependence}
 $$
 
-Overall, we can see that there are some obvious issues with the model proposed. In fact, the tests above suggest that there auto correlation, non-constant error, and independence issues. At this stage, the model warrants a closer look to examine how to remedy these issues.  
+Overall, we can see that there are some obvious issues with the model proposed. In fact, the tests above suggest that there auto correlation, non-constant error, and independence issues. At this stage, the model warrants a closer look to examine how to remedy these issues. The last of the assumption is exogeneity or the assumption that the dependent variables in the model are not dependent on the response variable. Several design measure were introduced in order to control for omitted variable bias such as selecting a subset of comparable countries for analysis, further details and potential suggestions for future analyses are discussed in the following section.
 
 ### Discussion 
 
